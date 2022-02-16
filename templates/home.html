@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AttNbkrist</title>
+
+</head>
+<style>
+    form{
+        margin: 20px;
+        padding:30px;
+        border-radius: 20px;
+        background-color: aliceblue;
+        text-align: center;
+        font-size: 20px;
+    }
+ input[type=submit]{
+       background-color: DodgerBlue;
+     font-size: 23px;
+  border:none;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+    display:inline;
+    margin: 20px;
+ }
+ input[type=text]{
+     font-size: 20px;
+ }
+</style>
+<body>
+<form action="/attshow" method="post" >
+    <label>
+        Enter Your RollNo:
+    </label>
+    <label>
+        <input  type="text" name="rollno" placeholder="Enter RollNo..." required maxlength="10"/><br>
+    </label>
+    <input type="submit" value="Show" />
+    <p>Your Attendance Till Now : {{ att }} </p>
+</form>
+
+</body>
+</html>
