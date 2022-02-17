@@ -29,13 +29,13 @@ branch_dic = {
 
 options = Options()
 options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-# options.add_argument("--headless")
-# options.add_argument("--disable-gpu")
-# options.add_argument("--no-sandbox")
-# options.add_argument("enable-automation")
-# options.add_argument("--disable-infobars")
-# options.add_argument("--disable-dev-shm-usage")
-web = webdriver.Chrome(executable_path='static/chromedriver', chrome_options=options)
+options.add_argument("--headless")
+options.add_argument("--disable-gpu")
+options.add_argument("--no-sandbox")
+options.add_argument("enable-automation")
+options.add_argument("--disable-infobars")
+options.add_argument("--disable-dev-shm-usage")
+web = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=options)
 web.implicitly_wait(2)
 
 
