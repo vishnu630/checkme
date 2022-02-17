@@ -43,6 +43,8 @@ def attshow():
             show.click()
             att1 = web.find_element_by_xpath(f'//*[@id="{rollno}"]')
             att= att1.text.split('\n')[0][-5:]
-            return render_template('home.html',att=att)
+            return render_template('home.html', att=att)
     return 'no'
+if __name__ == '__main__':
+    app.run()
 
