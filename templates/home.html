@@ -35,6 +35,10 @@
  input[type=text]{
      font-size: 20px;
  }
+ footer{
+     text-align: center;
+     float: bottom;
+ }
 </style>
 <body>
 <form action="/attshow" method="post" >
@@ -42,12 +46,18 @@
         Enter Your RollNo:
     </label>
     <label>
-        <input  type="text" name="rollno" placeholder="Enter RollNo..." required maxlength="10"/><br>
+        <input  type="text" name="rollno" placeholder="Enter RollNo..." required maxlength="10" title="Enter Complete RollNo"/><br>
     </label>
-    <input type="submit" value="Show" />
+    <input type="submit" value="Show" title="Get attendance" />
     <p>Your Attendance Till Now : {{ att }} </p>
 </form>
 
 
 </body>
+<footer >
+<!-- hitwebcounter Code START -->
+<a href="https://www.hitwebcounter.com" target="_blank">
+<img src="https://hitwebcounter.com/counter/counter.php?page=7947137&style=0008&nbdigits=5&type=page&initCount=0" title="Free Counter" Alt="web counter"   border="0" /></a>
+
+</footer>
 </html>
