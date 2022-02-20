@@ -26,7 +26,13 @@ branch_dic = {
     '12': '10',
     '30': '11'
 }
-
+@app.route('/')
+def index():
+    return redirect('/ThankU/')
+@app.route('/ThankU/')
+def thank_you():
+    return render_template('thank_you.html')
+'''
 options = Options()
 options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 options.add_argument("--headless")
@@ -111,7 +117,7 @@ def attshow():
         return render_template('home.html', att=att)
 
     return 'No Data Found check again'
-
+'''
 
 if __name__ == '__main__':
     app.run()
