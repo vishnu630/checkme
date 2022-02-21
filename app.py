@@ -1,11 +1,11 @@
 import datetime
 import os
-
 from flask import *
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 app = Flask(__name__)
+data=[]
 year_dic = {
     '11': '2',
     '12': '3',
@@ -32,7 +32,7 @@ def index():
 @app.route('/ThankU/')
 def thank_you():
     return render_template('thank_you.html')
-'''
+
 options = Options()
 options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
 options.add_argument("--headless")
@@ -57,11 +57,9 @@ def login(web):
 def get_data(adyear, branch, sec1, rollno):
     try:
         web.get('http://202.91.76.90:94/attendance/attendanceTillADate.php')
-        year = web.find_element_by_xpath(
-            f'/html/body/table[2]/tbody/tr[2]/td/form/table/tbody/tr[2]/td[2]/select/option[{int(adyear)}]')
+        year = web.find_element_by_xpath(f'/html/body/table[2]/tbody/tr[2]/td/form/table/tbody/tr[2]/td[2]/select/option[{int(adyear)}]')
         year.click()
-        bran = web.find_element_by_xpath(
-            f'/html/body/table[2]/tbody/tr[2]/td/form/table/tbody/tr[2]/td[3]/select/option[{int(branch)}]')
+        bran = web.find_element_by_xpath(f'/html/body/table[2]/tbody/tr[2]/td/form/table/tbody/tr[2]/td[3]/select/option[{int(branch)}]')
         bran.click()
         sec = web.find_element_by_xpath(
             f'/html/body/table[2]/tbody/tr[2]/td/form/table/tbody/tr[2]/td[4]/select/option[{sec1}]')
@@ -75,10 +73,13 @@ def get_data(adyear, branch, sec1, rollno):
         pass
 
 
-@app.route('/')
+@app.route('/home/')
 def home():
     return render_template('home.html')
 
+@app.route('/google/')
+def google():
+    return render_template('googlebaef31370ad205ff.html')
 
 @app.route('/attshow', methods=['POST', 'GET'])
 def attshow():
@@ -114,10 +115,10 @@ def attshow():
                     continue
                 else:
                     break
-        return render_template('home.html', att=att)
+        return render_template('home.html', att=att,rollno=rollno)
 
     return 'No Data Found check again'
-'''
+
 
 if __name__ == '__main__':
     app.run()
