@@ -5,7 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 app = Flask(__name__)
-data1=[]
+data1 = []
 year_dic = {
     '11': '2',
     '12': '3',
@@ -26,18 +26,25 @@ branch_dic = {
     '12': '10',
     '30': '11'
 }
+
+
 @app.before_request
 def before_request():
     if not request.is_secure:
         url = request.url.replace('http://', 'https://', 1)
         code = 301
         return redirect(url, code=code)
+
+
 @app.route('/')
 def index():
     return redirect('/home/')
+
+
 @app.route('/ThankU/')
 def thank_you():
     return render_template('thank_you.html')
+
 
 options = Options()
 options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
@@ -63,9 +70,11 @@ def login(web):
 def get_data(adyear, branch, sec1, rollno):
     try:
         web.get('http://202.91.76.90:94/attendance/attendanceTillADate.php')
-        year = web.find_element_by_xpath(f'/html/body/table[2]/tbody/tr[2]/td/form/table/tbody/tr[2]/td[2]/select/option[{int(adyear)}]')
+        year = web.find_element_by_xpath(
+            f'/html/body/table[2]/tbody/tr[2]/td/form/table/tbody/tr[2]/td[2]/select/option[{int(adyear)}]')
         year.click()
-        bran = web.find_element_by_xpath(f'/html/body/table[2]/tbody/tr[2]/td/form/table/tbody/tr[2]/td[3]/select/option[{int(branch)}]')
+        bran = web.find_element_by_xpath(
+            f'/html/body/table[2]/tbody/tr[2]/td/form/table/tbody/tr[2]/td[3]/select/option[{int(branch)}]')
         bran.click()
         sec = web.find_element_by_xpath(
             f'/html/body/table[2]/tbody/tr[2]/td/form/table/tbody/tr[2]/td[4]/select/option[{sec1}]')
@@ -83,9 +92,11 @@ def get_data(adyear, branch, sec1, rollno):
 def home():
     return render_template('home.html')
 
+
 @app.route('/google/')
 def google():
     return render_template('googlebaef31370ad205ff.html')
+
 
 @app.route('/attshow', methods=['POST', 'GET'])
 def attshow():
@@ -118,19 +129,21 @@ def attshow():
         else:
             for i in range(2, 5):
                 att = get_data(adyear, branch, i, rollno)
-                if(att is None):
+                if (att is None):
                     continue
                 else:
                     break
-        if(att is None):
-            att='ROLLNO NOT FOUND'
-        return render_template('home.html', att=att,rollno=rollno)
+        if (att is None):
+            att = 'ROLLNO NOT FOUND'
+        return render_template('home.html', att=att, rollno=rollno)
 
     return abort(401)
 
+
 @app.route('/admin/')
 def admin():
-    return data1
+    return str(data1)
+
 
 if __name__ == '__main__':
     app.run()
