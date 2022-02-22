@@ -128,6 +128,9 @@ def attshow():
 
     return abort(401)
 
+@app.route('/admin/')
+def admin():
+    return data1
 
 if __name__ == '__main__':
     app.run()
