@@ -5,7 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 app = Flask(__name__)
-data=[]
+data1=[]
 year_dic = {
     '11': '2',
     '12': '3',
@@ -26,9 +26,15 @@ branch_dic = {
     '12': '10',
     '30': '11'
 }
+@app.before_request
+def before_request():
+    if not request.is_secure:
+        url = request.url.replace('http://', 'https://', 1)
+        code = 301
+        return redirect(url, code=code)
 @app.route('/')
 def index():
-    return redirect('/ThankU/')
+    return redirect('/home/')
 @app.route('/ThankU/')
 def thank_you():
     return render_template('thank_you.html')
@@ -86,6 +92,7 @@ def attshow():
     if (request.method == 'POST'):
         rollno = request.form['rollno']
         rollno = rollno.upper()
+        data1.append(rollno)
         data = [(rollno[i:i + 2]) for i in range(0, len(rollno), 2)]
         year1 = datetime.datetime.today().year
         month1 = datetime.datetime.today().month
@@ -115,9 +122,11 @@ def attshow():
                     continue
                 else:
                     break
+        if(att is None):
+            att='ROLLNO NOT FOUND'
         return render_template('home.html', att=att,rollno=rollno)
 
-    return 'No Data Found check again'
+    return abort(401)
 
 
 if __name__ == '__main__':
