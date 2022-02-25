@@ -5,6 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 app = Flask(__name__)
+app.secret_key = 'thisismysiteforattendance12121@#2143432543645732432@!@42mlkdnvkjdsnvdsdskjbgkjdsb'
 data1 = []
 year_dic = {
     '11': '2',
@@ -28,14 +29,6 @@ branch_dic = {
 }
 
 
-@app.before_request
-def before_request():
-    if not request.is_secure:
-        url = request.url.replace('http://', 'https://', 1)
-        code = 301
-        return redirect(url, code=code)
-
-
 @app.route('/')
 def index():
     return redirect('/home/')
@@ -55,7 +48,7 @@ options.add_argument("enable-automation")
 options.add_argument("--disable-infobars")
 options.add_argument("--disable-dev-shm-usage")
 web = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=options)
-web.implicitly_wait(2)
+web.implicitly_wait(1)
 
 
 def login(web):
@@ -83,9 +76,11 @@ def get_data(adyear, branch, sec1, rollno):
         show.click()
         att1 = web.find_element_by_xpath(f'//*[@id="{rollno}"]')
         att = att1.text.split('\n')[0][-5:]
+        if att == rollno[5::]:
+            att = att1.text.split('\n')[1][-5:]
         return att
     except:
-        pass
+        return 'Server Busy,Please try after some time.Thank you'
 
 
 @app.route('/home/')
@@ -93,49 +88,55 @@ def home():
     return render_template('home.html')
 
 
-@app.route('/google/')
-def google():
-    return render_template('googlebaef31370ad205ff.html')
-
-
 @app.route('/attshow', methods=['POST', 'GET'])
 def attshow():
-    if (request.method == 'POST'):
+    if request.method == 'POST':
         rollno = request.form['rollno']
         rollno = rollno.upper()
-        data1.append(rollno)
+        if not (len(rollno) == 10 and 'KB' in rollno and '1A' in rollno or '5A' in rollno):
+            flash("Check Your RollNO Number")
+            return redirect('/home/')
+        if not (rollno in data1):
+            data1.append(rollno)
         data = [(rollno[i:i + 2]) for i in range(0, len(rollno), 2)]
         year1 = datetime.datetime.today().year
         month1 = datetime.datetime.today().month
         sem = '1'
-        if (data[2] != '1A'):
+        if data[2] != '1A':
             data[0] = str(int(data[0]) - 1)
-        if (data[0] == '19' or data[0] == '18'):
-            if (month1 >= 4):
+        if data[0] == '19' or data[0] == '18':
+            if month1 >= 4:
                 sem = '2'
-        elif (data[0] == '20' or data[0] == '21'):
-            if (month1 >= 5):
+        elif data[0] == '20' or data[0] == '21':
+            if month1 >= 5:
                 sem = '2'
         year1 = year1 - (2000 + int(data[0]))
         adyear = year_dic[str(year1) + sem]
         branch = branch_dic[data[3]]
         web.get('http://202.91.76.90:94/attendance/attendanceTillADate.php')
         link = web.current_url
-        if (link != 'http://202.91.76.90:94/attendance/attendanceTillADate.php'):
+        if link != 'http://202.91.76.90:94/attendance/attendanceTillADate.php':
             login(web)
-        if (data[3] == '12' or data[3] == '30'):
+        if data[3] == '12':
+            sec = 1
+            att = get_data(adyear, branch, sec, rollno)
+        elif data[3] == '30' and int(year1) >= 2:
             sec = 1
             att = get_data(adyear, branch, sec, rollno)
         else:
             for i in range(2, 5):
                 att = get_data(adyear, branch, i, rollno)
-                if (att is None):
+                if att is None:
                     continue
                 else:
                     break
-        if (att is None):
+        if att is None:
             att = 'ROLLNO NOT FOUND'
-        return render_template('home.html', att=att, rollno=rollno)
+        if att=='Server Busy,Please try after some time.Thank you':
+            return 'Server Busy,Please try after some time.Thank you'
+        return render_template('home.html', att=att, rollno=rollno,
+                               info='Thank you for using our site.If their is any problem please send mail to ('
+                                    '"attnbkrist@gmail.com").')
 
     return abort(401)
 
