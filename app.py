@@ -80,7 +80,7 @@ def get_data(adyear, branch, sec1, rollno):
             att = att1.text.split('\n')[1][-5:]
         return att
     except:
-        return 'Server Busy,Please try after some time.Thank you'
+        pass
 
 
 @app.route('/home/')
@@ -132,8 +132,6 @@ def attshow():
                     break
         if att is None:
             att = 'ROLLNO NOT FOUND'
-        if att=='Server Busy,Please try after some time.Thank you':
-            return 'Server Busy,Please try after some time.Thank you'
         return render_template('home.html', att=att, rollno=rollno,
                                info='Thank you for using our site.If their is any problem please send mail to ('
                                     '"attnbkrist@gmail.com").')
