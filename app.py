@@ -141,7 +141,7 @@ def attshow():
         elif year1 == 3 and not rollno in tdata:
             tdata.append(rollno)
         else:
-            if not rollno in frdata:
+            if not rollno in frdata and year1==4:
                 frdata.append(rollno)
         adyear = year_dic[str(year1) + sem]
         branch = branch_dic[data[3]]
