@@ -191,16 +191,22 @@ def adminsuccess():
         passw = request.form['adminpass']
         if (passw == 'nbkr@123'):
             session['name'] = 'adminlogin'
-            return render_template('adminsuc.html', fdata=str(sorted(fdata)), fsize=len(fdata),
-                                   sdata=str(sorted(sdata)), ssize=len(sdata),
-                                   tdata=str(sorted(tdata)), tsize=len(tdata), frdata=str(sorted(frdata)),
-                                   frsize=len(frdata),
-                                   tdsize=len(fdata) + len(sdata) + len(tdata) + len(frdata))
+            return redirect('/admindata/')
         else:
             flash("Wrong password")
             return redirect('/admin/')
     else:
         return redirect('/admin/')
+
+@app.route('/admindata/')
+def adminadata():
+    if not session.get('name'):
+        return render_template('admin.html')
+    return render_template('adminsuc.html', fdata=str(sorted(fdata)), fsize=len(fdata),
+                           sdata=str(sorted(sdata)), ssize=len(sdata),
+                           tdata=str(sorted(tdata)), tsize=len(tdata), frdata=str(sorted(frdata)),
+                           frsize=len(frdata),
+                           tdsize=len(fdata) + len(sdata) + len(tdata) + len(frdata))
 
 
 if __name__ == '__main__':
