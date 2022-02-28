@@ -170,7 +170,7 @@ def attshow():
         return render_template('home.html', att=att, rollno=rollno,
                                info='Thank you for using our site. If there is any problem please send mail to',fdlink='attnbkrist@gmail.com')
 
-    return abort(401)
+    return redirect('/home/')
 
 
 @app.route('/admin/')
@@ -181,8 +181,6 @@ def admin():
         return redirect('/adminsuccess')
 @app.route('/adminsuccess/',methods=['POST','GET'])
 def adminsuccess():
-    if not session.get('name'):
-        return render_template('admin.html')
     if request.method=='post':
         passw=request.form['adminpass']
         if(passw=='nbkr@123'):
@@ -194,7 +192,7 @@ def adminsuccess():
             flash("Wrong password")
             return redirect('/admin/')
     else:
-        return 'Sever is busy Try Again'
+        return redirect('/admin/')
 
 if __name__ == '__main__':
     app.run()
