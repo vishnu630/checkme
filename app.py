@@ -6,11 +6,11 @@ from selenium.webdriver.chrome.options import Options
 
 app = Flask(__name__)
 app.secret_key = 'thisismysiteforattendance12121@#2143432543645732432@!@42mlkdnvkjdsnvdsdskjbgkjdsb'
-fdata=[]
-sdata=[]
-tdata=[]
-frdata=[]
-cache_data=dict()
+fdata = []
+sdata = []
+tdata = []
+frdata = []
+cache_data = dict()
 year_dic = {
     '11': '2',
     '12': '3',
@@ -32,6 +32,7 @@ branch_dic = {
     '30': '11'
 }
 
+
 @app.errorhandler(404)
 def handle_404(e):
     return redirect('/')
@@ -41,6 +42,7 @@ def handle_404(e):
 def handle_500(e):
     flash("Check Your RollNO Number")
     return redirect('/')
+
 
 @app.route('/')
 def index():
@@ -53,6 +55,7 @@ def before_request():
         url = request.url.replace('http://', 'https://', 1)
         code = 301
         return redirect(url, code=code)
+
 
 @app.route('/ThankU/')
 def thank_you():
@@ -82,7 +85,7 @@ def login(web):
 
 def get_data(adyear, branch, sec1, rollno):
     try:
-        get_data.sec1=sec1
+        get_data.sec1 = sec1
         web.get('http://202.91.76.90:94/attendance/attendanceTillADate.php')
         year = web.find_element_by_xpath(
             f'/html/body/table[2]/tbody/tr[2]/td/form/table/tbody/tr[2]/td[2]/select/option[{int(adyear)}]')
@@ -131,11 +134,11 @@ def attshow():
             if month1 >= 5:
                 sem = '2'
         year1 = year1 - (2000 + int(data[0]))
-        if year1==1 and not rollno in frdata:
+        if year1 == 1 and not rollno in frdata:
             fdata.append(rollno)
-        elif year1==2 and not rollno in sdata:
+        elif year1 == 2 and not rollno in sdata:
             sdata.append(rollno)
-        elif year1==3 and not rollno in tdata:
+        elif year1 == 3 and not rollno in tdata:
             tdata.append(rollno)
         else:
             if not rollno in frdata:
@@ -153,7 +156,7 @@ def attshow():
             sec = 1
             att = get_data(adyear, branch, sec, rollno)
         elif rollno in cache_data:
-            sec =cache_data[rollno]
+            sec = cache_data[rollno]
             att = get_data(adyear, branch, sec, rollno)
 
         else:
@@ -166,9 +169,10 @@ def attshow():
         if att is None:
             att = 'ROLLNO NOT FOUND'
         if not rollno in cache_data:
-            cache_data[rollno]=get_data.sec1
+            cache_data[rollno] = get_data.sec1
         return render_template('home.html', att=att, rollno=rollno,
-                               info='Thank you for using our site. If there is any problem please send mail to',fdlink='attnbkrist@gmail.com')
+                               info='Thank you for using our site. If there is any problem please send mail to ',
+                               fdlink='attnbkrist@gmail.com')
 
     return redirect('/home/')
 
@@ -179,20 +183,25 @@ def admin():
         return render_template('admin.html')
     else:
         return redirect('/adminsuccess')
-@app.route('/adminsuccess/',methods=['POST','GET'])
+
+
+@app.route('/adminsuccess/', methods=['POST', 'GET'])
 def adminsuccess():
-    if request.method=='post':
-        passw=request.form['adminpass']
-        if(passw=='nbkr@123'):
-            session['name']='adminlogin'
-            return render_template('adminsuc.html',fdata=str(sorted(fdata)),fsize=len(fdata),sdata=str(sorted(sdata)),ssize=len(sdata),
-                                   tdata=str(sorted(tdata)),tsize=len(tdata),frdata=str(sorted(frdata)),frsize=len(frdata),
-                                   tdsize=len(fdata)+len(sdata)+len(tdata)+len(frdata))
+    if request.method == 'POST':
+        passw = request.form['adminpass']
+        if (passw == 'nbkr@123'):
+            session['name'] = 'adminlogin'
+            return render_template('adminsuc.html', fdata=str(sorted(fdata)), fsize=len(fdata),
+                                   sdata=str(sorted(sdata)), ssize=len(sdata),
+                                   tdata=str(sorted(tdata)), tsize=len(tdata), frdata=str(sorted(frdata)),
+                                   frsize=len(frdata),
+                                   tdsize=len(fdata) + len(sdata) + len(tdata) + len(frdata))
         else:
             flash("Wrong password")
             return redirect('/admin/')
     else:
         return redirect('/admin/')
+
 
 if __name__ == '__main__':
     app.run()
