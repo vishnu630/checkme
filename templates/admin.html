@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="google-site-verification" content="yvF7XLG_qSMm67vKZjdTbkHaoz8B4CG41SBSxVswoAQ" />
+    <meta charset="UTF-8">
+    <meta name="keywords" content="Attendance, nbkristattendance, nbkrist, nbkr, attnbkr, attnbkrist">
+    <meta name="description" content="Check Your Attendance here.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
+    <link rel="icon" type="image/x-icon" sizes="32x32" href="/static/favicon-32x32.png">
+    <link rel="icon" type="image/x-icon" sizes="16x16" href="/static/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <title>Att | Login</title>
+</head>
+<style>
+        form{
+        margin: 20px;
+        padding:30px;
+        border-radius: 20px;
+        background-color: aliceblue;
+        text-align: center;
+        font-size: 20px;
+    }
+        input[type=submit]{
+       background-color: DodgerBlue;
+     font-size: 23px;
+  border:none;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+    display:inline;
+    margin: 20px;
+ }
+        .flash{
+     color: #f85757;
+     border-radius: 10px;
+            padding: 1px;
+            border: 2px solid #f85757;
+            font-size: 18px;
+ }
+         input[type=password]{
+     font-size: 18px;
+ }
+</style>
+<body>
+<form action="/adminsuccess" method="post">
+    {% with messages = get_flashed_messages(warning) %}
+         {% if messages %}
+               {% for message in messages %}
+                   <div class="flash"><p>{{ message }}</p></div><br>
+               {% endfor %}
+         {% endif %}
+      {% endwith %}
+    <label>Enter password:</label>
+    <input type="password" placeholder="Enter password..." title="admin only" name="adminpass"><br>
+    <input type="submit" value="Login">
+</form>
+
+</body>
+</html>

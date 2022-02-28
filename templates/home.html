@@ -101,7 +101,7 @@ button{
     </label>
     <button id="button" title="Get attendance" onclick="mysubmit();">Show</button>
     <p>Your Attendance Till Now : <b>{{ att }}</b> </p>
-    <marquee behavior="scroll" direction="left" style="font-weight: bolder">{{ info }}</marquee>
+    <marquee behavior="scroll" direction="left" style="font-weight: bolder">{{ info }}<a style="text-decoration: none" href = "mailto:attnbkrist@gmail.com?subject = Feedback&body = Message">{{ fdlink }}</a></marquee>
 </form>
 
 <script type="text/javascript">
