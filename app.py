@@ -134,14 +134,14 @@ def attshow():
             if month1 >= 5:
                 sem = '2'
         year1 = year1 - (2000 + int(data[0]))
-        if year1 == 1 and not rollno in frdata:
+        if year1 == 1 and not rollno in fdata:
             fdata.append(rollno)
         elif year1 == 2 and not rollno in sdata:
             sdata.append(rollno)
         elif year1 == 3 and not rollno in tdata:
             tdata.append(rollno)
         else:
-            if not rollno in frdata and year1==4:
+            if not rollno in frdata and year1 == 4:
                 frdata.append(rollno)
         adyear = year_dic[str(year1) + sem]
         branch = branch_dic[data[3]]
@@ -182,14 +182,14 @@ def admin():
     if not session.get('name'):
         return render_template('admin.html')
     else:
-        return redirect('/adminsuccess')
+        return redirect('/admindata/')
 
 
 @app.route('/adminsuccess/', methods=['POST', 'GET'])
 def adminsuccess():
     if request.method == 'POST':
         passw = request.form['adminpass']
-        if (passw == 'nbkr@123'):
+        if passw == 'nbkr@123':
             session['name'] = 'adminlogin'
             return redirect('/admindata/')
         else:
@@ -197,6 +197,7 @@ def adminsuccess():
             return redirect('/admin/')
     else:
         return redirect('/admin/')
+
 
 @app.route('/admindata/')
 def adminadata():
