@@ -10,78 +10,19 @@
     <link rel="icon" type="image/x-icon" sizes="32x32" href="/static/favicon-32x32.png">
     <link rel="icon" type="image/x-icon" sizes="16x16" href="/static/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" type="text/css" href="/static/styles/home.css">
     <title>Att | Nbkrist</title>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4640999261594123"
      crossorigin="anonymous"></script>
 </head>
-<style>
-    #loader {
-  position: absolute;
-  left: 50%;
-  top: 20%;
-  z-index: 1;
-  width: 100px;
-  height: 100px;
-  margin: -76px 0 0 -76px;
-  border: 16px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 16px solid #3498db;
-  -webkit-animation: spin 2s linear infinite;
-  animation: spin 2s linear infinite;
-}
-
-@-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-    form{
-        margin: 20px;
-        padding:30px;
-        border-radius: 20px;
-        background-color: aliceblue;
-        text-align: center;
-        font-size: 20px;
-    }
-button{
-       background-color: DodgerBlue;
-     font-size: 23px;
-  border:none;
-  color: white;
-  border-radius: 10px;
-  cursor: pointer;
-    display:inline;
-    margin: 20px;
- }
- input[type=text]{
-     font-size: 18px;
- }
- footer{
-     text-align: center;
-     float: bottom;
- }
- .flash{
-     background-color: #f85757;
-     border-radius: 10px;
-     padding: 1px;
-     font-size: 18px;
- }
- @media only screen and (max-width: 620px) {
-     #loader{
-         left: 60%;
-         top:40%;
-           width: 60px;
-            height: 60px;
-        border: 10px solid #f3f3f3;
-        border-top: 10px solid #3498db;
-     }
- }
-</style>
+<header>
+    <div class="header">
+        <a href="{{ url_for('index') }}" class="logo" > ATT | NBKRIST</a>
+        <div class="header-right">
+            <a class="name" href="#">{{ name }}</a>
+        </div>
+    </div>
+</header>
 <body>
 <div id="loader" style="display: none">
 </div>
@@ -101,7 +42,6 @@ button{
     </label>
     <button id="button" title="Get attendance" onclick="mysubmit();">Show</button>
     <p>Your Attendance Till Now : <b>{{ att }}</b> </p>
-    <marquee behavior="scroll" direction="left" style="font-weight: bolder">{{ info }}<a style="text-decoration: none" href = "mailto:attnbkrist@gmail.com?subject = Feedback&body = Message">{{ fdlink }}</a></marquee>
 </form>
 
 <script type="text/javascript">
@@ -115,10 +55,27 @@ document.getElementById('formbody').submit();
 </script>
 
 </body>
-<footer>
-<!-- hitwebcounter Code START -->
-<a href="https://www.hitwebcounter.com" target="_blank">
-<img src="https://hitwebcounter.com/counter/counter.php?page=7948968&style=0008&nbdigits=6&type=ip&initCount=0" title="Free Counter" Alt="web counter"   border="0" /></a>
+<div class="footer-basic">
+        <footer>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="{{ url_for('admin')}}">Admin</a></li>
+                <li class="list-inline-item">Contact us</li>
+                <li class="list-inline-item"></li>
+                <!--<li class="list-inline-item"><a href="{{ url_for('index') }}">Home</a></li>
+                <li class="list-inline-item"><del>Services</del></li>
+                <li class="list-inline-item"><a href="#">About</a></li>-->
+            </ul>
+            <div class="social">
+                <!--<a><img src="https://img.icons8.com/fluency/48/000000/facebook-new.png"/></a>
+                <a><img src="https://img.icons8.com/color/48/000000/youtube-play.png"/></a>
+                <a><img src="https://img.icons8.com/fluency/48/000000/twitter.png"/></a>-->
+                <a href="https://www.instagram.com/attnbkrist_tk/" target="_blank"><img src="https://img.icons8.com/color/50/000000/instagram-new.png" alt="instagram"/></a>
+                <a href="mailto:attnbkrist@gmail.com?subject=Feedback {{ rollno }}" target="_blank"><img src="https://img.icons8.com/fluency/48/000000/gmail-new.png" alt="gmail"/></a>
+            </div>
+                <a href="https://www.hitwebcounter.com" target="_blank">
+                <img src="https://hitwebcounter.com/counter/counter.php?page=7948968&style=0008&nbdigits=6&type=ip&initCount=0" title="Free Counter" Alt="web counter"   border="0" /></a>
 
-</footer>
+           <p class="copyright">ADSV © 2022</p>
+        </footer>
+    </div>
 </html>
