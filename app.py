@@ -72,7 +72,7 @@ options.add_argument("enable-automation")
 options.add_argument("--disable-infobars")
 options.add_argument("--disable-dev-shm-usage")
 web = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=options)
-web.implicitly_wait(1)
+web.implicitly_wait(2)
 
 
 def login(web):

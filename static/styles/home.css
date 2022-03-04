@@ -172,13 +172,15 @@ button{
   margin-right: 0.5rem;
 }
 @media only screen and (max-width: 620px) {
+    .header a{
+        font-size: 17px;
+    }
     .header-right a{
         font-size: 16px;
     }
 
     .footer-basic{
         padding-bottom: 5px;
-        margin-top: 30%;
     }
     .footer-basic .social {
         text-align:center;
