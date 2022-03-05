@@ -149,6 +149,17 @@ def attshow():
         year1 = year1 - (2000 + int(data[0]))
         adyear = year_dic[str(year1) + sem]
         branch = branch_dic[data[3]]
+        if not rollno in cache_data:
+            cache_data[rollno] = get_data.sec1
+        if year1 == 1 and not rollno in fdata:
+            fdata.append(rollno+' '+name[0])
+        elif year1 == 2 and not rollno in sdata:
+            sdata.append(rollno+' '+name[0])
+        elif year1 == 3 and not rollno in tdata:
+            tdata.append(rollno+' '+name[0])
+        else:
+            if not rollno in frdata and year1 == 4:
+                frdata.append(rollno+' '+name[0])
         web.get('http://202.91.76.90:94/attendance/attendanceTillADate.php')
         link = web.current_url
         if link != 'http://202.91.76.90:94/attendance/attendanceTillADate.php':
@@ -174,17 +185,6 @@ def attshow():
             att = 'ROLLNO NOT FOUND'
         if name[0]=='':
             name[0]=rollno
-        if not rollno in cache_data:
-            cache_data[rollno] = get_data.sec1
-        if year1 == 1 and not rollno in fdata:
-            fdata.append(rollno+' '+name[0])
-        elif year1 == 2 and not rollno in sdata:
-            sdata.append(rollno+' '+name[0])
-        elif year1 == 3 and not rollno in tdata:
-            tdata.append(rollno+' '+name[0])
-        else:
-            if not rollno in frdata and year1 == 4:
-                frdata.append(rollno+' '+name[0])
         return render_template('home.html', att=att, rollno=rollno,name=f'Hello,{name[0]}')
 
     return redirect('/home/')
