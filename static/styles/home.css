@@ -173,6 +173,18 @@ button{
 .list-inline-item:not(:last-child) {
   margin-right: 0.1rem;
 }
+        table{
+        padding:30px;
+        background-color: aliceblue;
+        font-size: 20px;
+            border: 1px;
+            width: 100%;
+
+    }
+        table, th, td {
+  border: 3px solid white;
+  border-collapse: collapse;
+}
 @media only screen and (max-width: 620px) {
     .header a{
         font-size: 15px;

@@ -10,23 +10,18 @@
     <link rel="icon" type="image/x-icon" sizes="32x32" href="/static/favicon-32x32.png">
     <link rel="icon" type="image/x-icon" sizes="16x16" href="/static/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
+    <link rel="stylesheet" type="text/css" href="/static/styles/home.css">
     <title>Att | Admin</title>
 </head>
-<style>
-        table{
-        padding:30px;
-        background-color: aliceblue;
-        font-size: 20px;
-            border: 1px;
-            width: 100%;
 
-    }
-        table, th, td {
-  border: 3px solid white;
-  border-collapse: collapse;
-}
-
-</style>
+<header>
+    <div class="header">
+        <a href="{{ url_for('index') }}" class="logo" > ATT | ADMIN</a>
+        <div class="header-right">
+            <a class="name" href="{{ url_for('adminsuccess') }}">Hello, Admin</a>
+        </div>
+    </div>
+</header>
 <body>
 <h2 style="text-align: center">Welcome to Admin page</h2>
 <table>
@@ -61,6 +56,22 @@
         </th>
         <td colspan="2" style="text-align: center;">
             {{ tdsize }}
+        </td>
+    </tr>
+    <tr>
+        <th>
+            Cache data
+        </th>
+        <td colspan="2">
+            {{ cache }}
+        </td>
+    </tr>
+    <tr>
+        <th>
+            Names
+        </th>
+        <td colspan="2">
+            {{ names }}
         </td>
     </tr>
 </table>

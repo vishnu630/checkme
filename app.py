@@ -4,6 +4,7 @@ from flask import *
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.common.exceptions import NoSuchElementException
 
 app = Flask(__name__)
 app.secret_key = 'thisismysiteforattendance12121@#2143432543645732432@!@42mlkdnvkjdsnvdsdskjbgkjdsb'
@@ -11,6 +12,7 @@ fdata = []
 sdata = []
 tdata = []
 frdata = []
+names = []
 cache_data = dict()
 year_dic = {
     '11': '2',
@@ -72,7 +74,7 @@ options.add_argument("enable-automation")
 options.add_argument("--disable-infobars")
 options.add_argument("--disable-dev-shm-usage")
 web = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=options)
-web.implicitly_wait(2)
+web.implicitly_wait(1)
 
 
 def login(web):
@@ -85,7 +87,8 @@ def login(web):
 
 
 def get_data(adyear, branch, sec1, rollno):
-    global name
+    name=' '
+    att = None
     try:
         get_data.sec1 = sec1
         web.get('http://202.91.76.90:94/attendance/attendanceTillADate.php')
@@ -100,24 +103,25 @@ def get_data(adyear, branch, sec1, rollno):
         sec.click()
         show = web.find_element_by_xpath('/html/body/table[2]/tbody/tr[2]/td/form/table/tbody/tr[2]/td[5]/input[2]')
         show.click()
-        hover_link=web.find_element_by_xpath(f'//*[@id="td{rollno}"]')
-        hover=ActionChains(web).move_to_element(hover_link)
-        hover.perform()
-        try:
-            pdata=web.find_element_by_xpath(f'//*[@id="td{rollno}"]').get_attribute('title')
-            name=pdata.split('\n')
-            if '(W)' in name[0]:
-                name[0]=name[0][0:-3]
-        except:
-            pass
         att1 = web.find_element_by_xpath(f'//*[@id="{rollno}"]')
         att = att1.text.split('\n')[0][-5:]
 
         if att == rollno[5::]:
             att = att1.text.split('\n')[1][-5:]
-        return att ,name
-    except:
-        pass
+        try:
+            hover_link = web.find_element_by_xpath(f'//*[@id="td{rollno}"]')
+            hover = ActionChains(web).move_to_element(hover_link)
+            hover.perform()
+            pdata = web.find_element_by_xpath(f'//*[@id="td{rollno}"]').get_attribute('title')
+            name = pdata.split('\n')
+            if '(W)' in name[0]:
+                name[0] = name[0][0:-3]
+        except NoSuchElementException:
+            name = ' '
+            pass
+        return att, name
+    except NoSuchElementException:
+        return att, name
 
 
 @app.route('/home/')
@@ -144,8 +148,8 @@ def attshow():
             if month1 >= 4:
                 sem = '2'
         elif data[0] == '18':
-            if month1 >=3:
-                sem='2'
+            if month1 >= 3:
+                sem = '2'
         elif data[0] == '20' or data[0] == '21':
             if month1 >= 5:
                 sem = '2'
@@ -170,29 +174,31 @@ def attshow():
             att, name = get_data(adyear, branch, sec, rollno)
         elif data[3] == '30' and int(year1) >= 2:
             sec = 1
-            att , name= get_data(adyear, branch, sec, rollno)
-        elif data[3]=='03' and int(year1)==1:
-            sec=1
-            att ,name =get_data(adyear,branch,sec,rollno)
+            att, name = get_data(adyear, branch, sec, rollno)
+        elif data[3] == '03' and int(year1) == 1:
+            sec = 1
+            att, name = get_data(adyear, branch, sec, rollno)
 
         elif rollno in cache_data:
             sec = cache_data[rollno]
-            att ,name = get_data(adyear, branch, sec, rollno)
+            att, name = get_data(adyear, branch, sec, rollno)
 
         else:
             for i in range(2, 5):
-                att , name = get_data(adyear, branch, i, rollno)
+                att, name = get_data(adyear, branch, i, rollno)
                 if att is None:
                     continue
                 else:
                     break
-        if att is None :
+        if att is None:
             att = 'ROLLNO NOT FOUND'
-        if name[0]=='':
-            name[0]=rollno
+        if name[0] == ' ' or name[0] == '':
+            name[0] = rollno
         if not rollno in cache_data:
             cache_data[rollno] = get_data.sec1
-        return render_template('home.html', att=att, rollno=rollno,name=f'Hello,{name[0]}')
+        if not name[0] in names:
+            names.append(name[0])
+        return render_template('home.html', att=att, rollno=rollno, name=f'Hello,{name[0]}')
 
     return redirect('/home/')
 
@@ -227,7 +233,7 @@ def adminadata():
                            sdata=str(sorted(sdata)), ssize=len(sdata),
                            tdata=str(sorted(tdata)), tsize=len(tdata), frdata=str(sorted(frdata)),
                            frsize=len(frdata),
-                           tdsize=len(fdata) + len(sdata) + len(tdata) + len(frdata))
+                           tdsize=len(fdata) + len(sdata) + len(tdata) + len(frdata), names=names, cache=cache_data)
 
 
 if __name__ == '__main__':
