@@ -100,10 +100,10 @@ def get_data(adyear, branch, sec1, rollno):
         sec.click()
         show = web.find_element_by_xpath('/html/body/table[2]/tbody/tr[2]/td/form/table/tbody/tr[2]/td[5]/input[2]')
         show.click()
+        hover_link=web.find_element_by_xpath(f'//*[@id="td{rollno}"]')
+        hover=ActionChains(web).move_to_element(hover_link)
+        hover.perform()
         try:
-            hover_link=web.find_element_by_xpath(f'//*[@id="td{rollno}"]')
-            hover=ActionChains(web).move_to_element(hover_link)
-            hover.perform()
             pdata=web.find_element_by_xpath(f'//*[@id="td{rollno}"]').get_attribute('title')
             name=pdata.split('\n')
             if '(W)' in name[0]:
@@ -140,26 +140,27 @@ def attshow():
         sem = '1'
         if data[2] != '1A':
             data[0] = str(int(data[0]) - 1)
-        if data[0] == '19' or data[0] == '18':
+        if data[0] == '19':
             if month1 >= 4:
                 sem = '2'
+        elif data[0] == '18':
+            if month1 >=3:
+                sem='2'
         elif data[0] == '20' or data[0] == '21':
             if month1 >= 5:
                 sem = '2'
         year1 = year1 - (2000 + int(data[0]))
         adyear = year_dic[str(year1) + sem]
         branch = branch_dic[data[3]]
-        if not rollno in cache_data:
-            cache_data[rollno] = get_data.sec1
         if year1 == 1 and not rollno in fdata:
-            fdata.append(rollno+' '+name[0])
+            fdata.append(rollno)
         elif year1 == 2 and not rollno in sdata:
-            sdata.append(rollno+' '+name[0])
+            sdata.append(rollno)
         elif year1 == 3 and not rollno in tdata:
-            tdata.append(rollno+' '+name[0])
+            tdata.append(rollno)
         else:
             if not rollno in frdata and year1 == 4:
-                frdata.append(rollno+' '+name[0])
+                frdata.append(rollno)
         web.get('http://202.91.76.90:94/attendance/attendanceTillADate.php')
         link = web.current_url
         if link != 'http://202.91.76.90:94/attendance/attendanceTillADate.php':
@@ -170,6 +171,10 @@ def attshow():
         elif data[3] == '30' and int(year1) >= 2:
             sec = 1
             att , name= get_data(adyear, branch, sec, rollno)
+        elif data[3]=='03' and int(year1)==1:
+            sec=1
+            att ,name =get_data(adyear,branch,sec,rollno)
+
         elif rollno in cache_data:
             sec = cache_data[rollno]
             att ,name = get_data(adyear, branch, sec, rollno)
@@ -185,6 +190,8 @@ def attshow():
             att = 'ROLLNO NOT FOUND'
         if name[0]=='':
             name[0]=rollno
+        if not rollno in cache_data:
+            cache_data[rollno] = get_data.sec1
         return render_template('home.html', att=att, rollno=rollno,name=f'Hello,{name[0]}')
 
     return redirect('/home/')

@@ -143,7 +143,7 @@ button{
   height:40px;
   text-align:center;
   border-radius:50%;
-  margin:0 8px;
+  margin:0 20px;
   color:inherit;
   opacity:0.75;
     cursor: pointer;
@@ -161,22 +161,24 @@ button{
   margin-bottom:0;
 }
     .list-inline {
+        margin-left: 25px;
   padding-left: 0;
   list-style: none;
 }
     .list-inline-item {
+
   display: inline-block;
 }
 
 .list-inline-item:not(:last-child) {
-  margin-right: 0.5rem;
+  margin-right: 0.1rem;
 }
 @media only screen and (max-width: 620px) {
     .header a{
-        font-size: 17px;
+        font-size: 15px;
     }
     .header-right a{
-        font-size: 16px;
+        font-size: 13px;
     }
 
     .footer-basic{
