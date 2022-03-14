@@ -41,7 +41,7 @@
         <input id="rolno" type="text" name="rollno" value="{{ rollno }}" placeholder="Enter RollNo..." required maxlength="10" title="Enter Complete RollNo" /><br>
     </label>
     <button id="button" title="Get attendance" onclick="mysubmit();">Show</button>
-    <p>Your Attendance Till Now : <b>{{ att }}</b> </p>
+    <p>Your Attendance Till Now : <b style="color: {{ color }}">{{ att }}</b> </p>
 </form>
 
 <script type="text/javascript">
