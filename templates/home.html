@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta name="google-site-verification" content="yvF7XLG_qSMm67vKZjdTbkHaoz8B4CG41SBSxVswoAQ" />
     <meta charset="UTF-8">
@@ -26,6 +26,7 @@
 <body>
 <div id="loader" style="display: none">
 </div>
+<div class="container">
 <form action="/attshow" method="post" id="formbody">
        {% with messages = get_flashed_messages(warning) %}
          {% if messages %}
@@ -43,7 +44,21 @@
     <button id="button" title="Get attendance" onclick="mysubmit();">Show</button>
     <p>Your Attendance Till Now : <b style="color: {{ color }}">{{ att }}</b> </p>
 </form>
+    <div class="extra_data">
+        <button onclick="ttable()">Time Table</button>
+        <button>Syllabus</button>
+        <s><button>Sem Marks</button></s>
+        <s><button>Mid Marks</button></s>
+    </div>
+<div id="ttable">
+    <table id="table">
+    </table>
 
+</div>
+<div id="syllabus">
+
+</div>
+</div>
 <script type="text/javascript">
 
  function mysubmit(){
@@ -53,7 +68,9 @@ document.getElementById('formbody').style.opacity='0.7';
 document.getElementById('loader').style.display='block';
 document.getElementById('formbody').submit();
  }
-
+function ttable(){
+    document.getElementById('ttable').style.display='block';
+}
 </script>
 </body>
 <div class="footer-basic">
@@ -74,7 +91,7 @@ document.getElementById('formbody').submit();
                 <a href="mailto:attnbkrist@gmail.com?subject=Feedback {{ rollno }}" target="_blank"><img src="https://img.icons8.com/fluency/48/000000/gmail-new.png" alt="gmail"/></a>
             </div>
                 <a href="https://www.hitwebcounter.com" target="_blank">
-                <img src="https://hitwebcounter.com/counter/counter.php?page=7948968&style=0008&nbdigits=6&type=ip&initCount=0" title="Free Counter" Alt="web counter"   border="0" /></a>
+                <img src="https://hitwebcounter.com/counter/counter.php?page=7948968&style=0008&nbdigits=6&type=ip&initCount=0" title="Free Counter" Alt="web counter"/></a>
 
            <p class="copyright">ADSV © 2022</p>
         </footer>

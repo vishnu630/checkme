@@ -33,12 +33,12 @@ def index():
     return redirect('/home/')
 
 
-@app.before_request
+'''@app.before_request
 def before_request():
     if not request.is_secure:
         url = request.url.replace('http://', 'https://', 1)
         code = 301
-        return redirect(url, code=code)
+        return redirect(url, code=code)'''
 
 
 @app.route('/ThankU/')
@@ -54,10 +54,25 @@ options.add_argument("--no-sandbox")
 options.add_argument("enable-automation")
 options.add_argument("--disable-infobars")
 options.add_argument("--disable-dev-shm-usage")
-web = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), chrome_options=options)
+web = webdriver.Chrome(executable_path='static/chromedriver')
 web.implicitly_wait(1)
+def ttime(adyear, branch, sec1):
+    web.get('http://202.91.76.90:94/TimeTables/viewTTByClass.php')
+    year = web.find_element(By.XPATH,
+                            f'/html/body/table[2]/tbody/tr[2]/td/form/table[1]/tbody/tr[3]/td[2]/select/option[{adyear}]')
+    year.click()
+    bran = web.find_element(By.XPATH,
+                            f'/html/body/table[2]/tbody/tr[2]/td/form/table[1]/tbody/tr[3]/td[3]/select/option[{branch}]')
+    bran.click()
+    sec = web.find_element(By.XPATH,
+                           f'/html/body/table[2]/tbody/tr[2]/td/form/table[1]/tbody/tr[3]/td[4]/select/option[{sec1}]')
+    sec.click()
+    show = web.find_element(By.XPATH, '/html/body/table[2]/tbody/tr[2]/td/form/table/tbody/tr[3]/td[5]/input')
 
-
+    show.click()
+    ttable=web.find_element(By.XPATH,'//*[@id="tblTT"]')
+    ttdata=ttable.get_attribute('innerHTML')
+    return ttdata
 def login(web):
     user = web.find_element_by_xpath('//*[@id="username"]')
     user.send_keys('jyothsna5')
@@ -204,9 +219,12 @@ def attshow():
             tdata[rollno]=name
         else:
             fr_data[rollno]=name
-        return render_template('home.html', att=att, rollno=rollno, name=f'Hello,{name}',color=color)
+        data=ttime(adyear,branch,section)
+        return render_template('home.html', att=att, rollno=rollno, name=f'Hello,{name}',color=color,data=data)
 
     return redirect('/home/')
+
+
 
 
 @app.route('/admin/')
